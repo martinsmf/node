@@ -12,11 +12,14 @@ async function walk(files, rootDir) {
     const fileFullPath = path.resolve(rootDir, file);
     const stats = await fs.stat(fileFullPath);
 
+    if (/\.git/g.test(fileFullPath)) continue;
+    if (/node_modules/g.test(fileFullPath)) continue;
+
     if (stats.isDirectory()) {
-      readdir();
+      readdir(fileFullPath);
       continue;
     }
-
+    if (!/\.json$/g.test(fileFullPath)) continue;
     console.log(fileFullPath);
   }
 }
